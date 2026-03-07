@@ -31,6 +31,9 @@ export default function JobsTable({
       const dateB = new Date(b.date).getTime();
       return dateSort === "asc" ? dateA - dateB : dateB - dateA;
     });
+    const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString("en-GB"); // DD-MM-YYYY
+};
 
   return (
     <section className={styles.tableContainer}>
@@ -49,7 +52,7 @@ export default function JobsTable({
             <tr key={job.id}>
               <td>{job.title}</td>
 
-              <td>{job.date}</td>
+             <td>{formatDate(job.date)}</td>
 
               <td>
                 <span

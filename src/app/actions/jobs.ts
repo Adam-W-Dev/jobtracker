@@ -1,7 +1,8 @@
 "use server";
 
-import { createClient } from "../utils/supabase/client";
+import { createClient } from "../utils/supabase/server"; 
 import { JobStatus, Job } from "../Types/job";
+import { revalidatePath } from "next/cache";
 
 // ----------------- CREATE -----------------
 export async function createJob(job: {
@@ -9,7 +10,7 @@ export async function createJob(job: {
   date: string;
   status: JobStatus;
 }): Promise<Job> {
-  const supabase = createClient();
+  const supabase = await createClient(); // Await is required here
 
   const { data, error } = await supabase
     .from("job_application")
@@ -23,9 +24,11 @@ export async function createJob(job: {
 
   if (error) {
     console.error("Supabase insert failed:", error);
-    throw new Error("Failed to create job");
+    throw new Error(error.message);
   }
 
+  revalidatePath("/"); 
+  
   return {
     id: data.id,
     title: data.title,
@@ -34,10 +37,9 @@ export async function createJob(job: {
   };
 }
 
-
 // ----------------- READ -----------------
 export async function fetchJobs(): Promise<Job[]> {
-  const supabase = createClient();
+  const supabase = await createClient(); // Fixed: Added await
 
   const { data, error } = await supabase
     .from("job_application")
@@ -46,7 +48,7 @@ export async function fetchJobs(): Promise<Job[]> {
 
   if (error) {
     console.error("Supabase fetch failed:", error);
-    throw new Error("Failed to fetch jobs");
+    return []; // Return empty array to keep UI from crashing
   }
 
   return (data || []).map(row => ({
@@ -64,7 +66,7 @@ export async function updateJob(job: {
   date: string;
   status: JobStatus;
 }) {
-  const supabase = createClient();
+  const supabase = await createClient(); // Fixed: Added await
 
   const { error } = await supabase
     .from("job_application")
@@ -77,13 +79,15 @@ export async function updateJob(job: {
 
   if (error) {
     console.error("Supabase update failed:", error);
-    throw new Error("Failed to update job");
+    throw new Error(error.message);
   }
+  
+  revalidatePath("/"); // Update UI immediately
 }
 
 // ----------------- DELETE -----------------
 export async function deleteJob(jobId: string) {
-  const supabase = createClient();
+  const supabase = await createClient(); // Fixed: Added await
 
   const { error } = await supabase
     .from("job_application")
@@ -92,6 +96,8 @@ export async function deleteJob(jobId: string) {
 
   if (error) {
     console.error("Supabase delete failed:", error);
-    throw new Error("Failed to delete job");
+    throw new Error(error.message);
   }
+
+  revalidatePath("/"); // Update UI immediately
 }

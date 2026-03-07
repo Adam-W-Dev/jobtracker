@@ -6,11 +6,16 @@ import JobModal from "../Components/JobModal";
 import JobsTable from "../Components/JobsTable";
 import JobFilters from "../Components/JobFilters";
 import DashboardCards from "../Components/DashboardCards";
+import WelcomeCard from "../Components/WelcomeCard";
 
 import { Job, JobStatus } from "../Types/job";
 import { createJob, updateJob, deleteJob, fetchJobs } from "../actions/jobs";
 
-export default function Tracker() {
+type Props = {
+  name: string;
+};
+
+export default function Tracker({ name }: Props) {
   // ---------------- JOB DATA ----------------
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,6 +39,8 @@ export default function Tracker() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<JobStatus | "">("");
   const [dateSort, setDateSort] = useState<"asc" | "desc">("asc");
+
+  
 
   // ---------------- HANDLERS ----------------
 
@@ -124,6 +131,7 @@ export default function Tracker() {
 
   return (
     <>
+    <WelcomeCard title="Job Tracker" user={name} />
       <AddJobBar
         value={draftTitle}
         onChange={setDraftTitle}
