@@ -3,9 +3,8 @@
 import { useState, useEffect } from "react";
 import { createClient } from "../utils/supabase/client";
 import { useRouter } from "next/navigation";
-import styles from "../styles/tracker.module.css";
+import styles from "@/app/styles/tracker.module.css";
 
-// Senior Move: Define explicit modes to avoid boolean confusion
 type AuthMode = "login" | "signup";
 
 export default function AuthModal() {
@@ -19,7 +18,6 @@ export default function AuthModal() {
   const router = useRouter();
   const supabase = createClient();
 
-  // Prevent hydration mismatch (ensures client-side only rendering for the form state)
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -68,10 +66,6 @@ export default function AuthModal() {
     <div className={styles.nameModal}>
       <form onSubmit={handleAuth} className={styles.modalContent}>
         <h2>{mode === "signup" ? "Create Account" : "Welcome Back"}</h2>
-
-        {/* Senior Move: Logical AND (&&) is fine, but ensure 
-            the state is strictly 'signup' to avoid truthy/falsy bugs
-        */}
         {mode === "signup" && (
           <input
             type="text"
@@ -113,7 +107,7 @@ export default function AuthModal() {
       
       <span
         className={styles.linkText}
-        onClick={() => {
+        onClick={() => { 
           setMode(mode === "login" ? "signup" : "login");
           setDisplayName("");
         }}

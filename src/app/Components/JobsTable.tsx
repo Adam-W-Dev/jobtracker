@@ -1,7 +1,7 @@
 "use client";
 
 import { Job } from "../Types/job";
-import styles from "../styles/tracker.module.css";
+import styles from "@/app/styles/tracker.module.css";
 
 type Props = {
   jobs: Job[];

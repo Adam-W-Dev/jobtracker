@@ -1,4 +1,4 @@
-import styles from "../styles/tracker.module.css";
+import styles from "@/app/styles/tracker.module.css";
 
 type CardData = {
   title: string;

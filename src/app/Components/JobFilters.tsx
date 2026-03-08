@@ -2,7 +2,7 @@
 "use client";
 
 import { ChangeEvent } from "react";
-import styles from "../styles/tracker.module.css";
+import styles from "@/app/styles/tracker.module.css";
 import { JobStatus } from "../Types/job";
 
 type Props = {

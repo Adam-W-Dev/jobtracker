@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { createClient } from "../utils/supabase/client";
 import { useRouter } from "next/navigation";
-import styles from "../styles/tracker.module.css";
+import styles from "@/app/styles/tracker.module.css";
 
 type Props = {
   title: string;
